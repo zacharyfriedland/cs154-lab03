@@ -8,6 +8,7 @@ B = pyrtl.Input(bitwidth=32, name='B')
 reg_A = pyrtl.Register(bitwidth=32, name='reg_A')
 reg_B = pyrtl.Register(bitwidth=32, name='reg_B')
 reg_temp = pyrtl.Register(bitwidth=32, name='reg_temp')
+reg_counter = pyrtl.Register(bitwidth=32, name='reg_counter')
 
 # Declare one 32-bit outputs: result
 result = pyrtl.Output(bitwidth=32, name='result')
@@ -16,14 +17,13 @@ result = pyrtl.Output(bitwidth=32, name='result')
 reg_temp.next <<= A + B
 reg_A.next <<= reg_B
 reg_B.next <<= reg_temp
+reg_counter.next <<= reg_counter + 1
 
 with pyrtl.conditional_assignment:
-    with reg_temp == 0:
+    with reg_counter == 0:
         result |= A
-        # with reg_A == 0:
-        #     result |= B
-        # with reg_B == 0:
-        #     result |= A
+    with reg_counter == 1:
+        result |= B
     with pyrtl.otherwise:
         result |= reg_temp
 
