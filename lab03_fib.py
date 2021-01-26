@@ -14,7 +14,7 @@ reg_counter = pyrtl.Register(bitwidth=32, name='reg_counter')
 result = pyrtl.Output(bitwidth=32, name='result')
 
 
-reg_temp.next <<= A + B
+reg_temp.next <<= reg_A + reg_B
 reg_A.next <<= reg_B
 reg_B.next <<= reg_temp
 reg_counter.next <<= reg_counter + 1
