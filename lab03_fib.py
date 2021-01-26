@@ -20,25 +20,25 @@ result = pyrtl.Output(bitwidth=32, name='result')
 with pyrtl.conditional_assignment:
     with reg_counter == 0:
         result |= A
+        reg_A.next |= A
+        reg_B.next |= B
         reg_counter.next |= reg_counter + 1
     with reg_counter == 1:
         result |= B
-        reg_A.next |= A
-        reg_B.next |= B
+        
         reg_temp.next |= reg_A + reg_B
         reg_counter.next |= reg_counter + 1
     with pyrtl.otherwise:
-        result |= reg_temp
         reg_temp.next |= reg_A + reg_B
         reg_A.next |= reg_B
         reg_B.next |= reg_temp
+        result |= reg_temp
         reg_counter.next |= reg_counter + 1
-
 
 # Testbench
 simvals = {
-    'A':    "00000",
-    'B':    "11111"
+    'A':    "11111",
+    'B':    "22222"
 }
 
 # Simulate and test your "alu" design
