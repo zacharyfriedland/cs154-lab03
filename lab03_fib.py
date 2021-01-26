@@ -19,10 +19,11 @@ reg_B.next <<= reg_temp
 
 with pyrtl.conditional_assignment:
     with reg_temp == 0:
-        with reg_A == 0:
-            result |= B
-        with reg_B == 0:
-            result |= A
+        result |= A
+        # with reg_A == 0:
+        #     result |= B
+        # with reg_B == 0:
+        #     result |= A
     with pyrtl.otherwise:
         result |= reg_temp
 
