@@ -12,14 +12,19 @@ reg_temp = pyrtl.Register(bitwidth=32, name='reg_temp')
 # Declare one 32-bit outputs: result
 result = pyrtl.Output(bitwidth=32, name='result')
 
-
-
-
+result <<= A
 reg_temp.next <<= A + B
 reg_A.next <<= reg_B
 reg_B.next <<= reg_temp
-result <<= reg_temp
 
+with pyrtl.conditional_assignment:
+    with reg_temp == 0:
+        with reg_A == 0:
+            result |= B
+        with reg_B == 0:
+            result |= A
+    with pyrtrl.otherwise:
+        result |= reg_temp
 
 
 # Testbench
