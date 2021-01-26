@@ -22,17 +22,19 @@ with pyrtl.conditional_assignment:
         result |= A
         reg_A.next |= A
         reg_B.next |= B
+        reg_temp.next |= A + B
         reg_counter.next |= reg_counter + 1
     with reg_counter == 1:
         result |= B
-        
+        reg_A.next |= reg_B
+        reg_B.next |= reg_temp
         reg_temp.next |= reg_A + reg_B
         reg_counter.next |= reg_counter + 1
     with pyrtl.otherwise:
-        reg_temp.next |= reg_A + reg_B
         reg_A.next |= reg_B
-        reg_B.next |= reg_temp
+        reg_B.next |= reg_A + reg_B
         result |= reg_temp
+        reg_temp.next |= reg_A + reg_B
         reg_counter.next |= reg_counter + 1
 
 # Testbench
