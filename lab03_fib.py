@@ -24,6 +24,9 @@ with pyrtl.conditional_assignment:
         result |= A
     with reg_counter == 1:
         result |= B
+        reg_A.next |= A
+        reg_B.next |= B
+        #reg_temp.next |= reg_A + reg_B
     with pyrtl.otherwise:
         result |= reg_temp
 
