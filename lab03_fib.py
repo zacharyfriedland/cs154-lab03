@@ -14,10 +14,11 @@ result = pyrtl.Output(bitwidth=32, name='result')
 
 
 
-result <<= A + B
+
 reg_temp.next <<= A + B
 reg_A.next <<= reg_B
 reg_B.next <<= reg_temp
+result <<= reg_temp
 
 
 
