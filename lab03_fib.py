@@ -14,21 +14,25 @@ reg_counter = pyrtl.Register(bitwidth=32, name='reg_counter')
 result = pyrtl.Output(bitwidth=32, name='result')
 
 
-reg_temp.next <<= reg_A + reg_B
-reg_A.next <<= reg_B
-reg_B.next <<= reg_temp
-reg_counter.next <<= reg_counter + 1
+
+
 
 with pyrtl.conditional_assignment:
     with reg_counter == 0:
         result |= A
+        reg_counter.next |= reg_counter + 1
     with reg_counter == 1:
         result |= B
         reg_A.next |= A
         reg_B.next |= B
-        #reg_temp.next |= reg_A + reg_B
+        reg_temp.next |= reg_A + reg_B
+        reg_counter.next |= reg_counter + 1
     with pyrtl.otherwise:
         result |= reg_temp
+        reg_temp.next |= reg_A + reg_B
+        reg_A.next |= reg_B
+        reg_B.next |= reg_temp
+        reg_counter.next |= reg_counter + 1
 
 
 # Testbench
